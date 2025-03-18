@@ -6,7 +6,7 @@ class TrackerAdmin(admin.ModelAdmin):
     search_fields = ('title', 'user__username')  
     list_filter = ('frequency', 'created_at')  
     ordering = ('-created_at',) 
-    fields = ('title', 'user', 'frequency', 'specific_date', 'weekdays')  
+    fields = ('title', 'user', 'frequency', 'specific_date')  
     autocomplete_fields = ('user',)  
 
 admin.site.register(Tracker, TrackerAdmin)

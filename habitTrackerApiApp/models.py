@@ -45,7 +45,8 @@ class Tracker(models.Model):
 
 class HabitLog(models.Model):
     tracker = models.ForeignKey(Tracker, on_delete=models.CASCADE)
-    date_completed = models.DateField()  # Stores when the habit was completed
+    date_completed = models.DateField() 
+    timestamp = models.DateTimeField(auto_now_add=True) 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -1,8 +1,45 @@
 {% extends 'habitApp/base.html' %}
 {% load static %}
 
-{% block title %}Home - Habit Tracker{% endblock %}
+{% block title %}Habit List{% endblock %}
 
 {% block content %}
-    <h2>This is the Home Page</h2>
+    <h2>Habit List</h2>
+
+    <!-- Filter Form -->
+    <form method="get" action="">
+        <label for="filter">Filter by Frequency:</label>
+        <select name="frequency" id="filter" class="form-select">
+            <option value="">All</option>
+            <option value="daily" {% if request.GET.frequency == "daily" %}selected{% endif %}>Daily</option>
+            <option value="weekly" {% if request.GET.frequency == "weekly" %}selected{% endif %}>Weekly</option>
+            <option value="monthly" {% if request.GET.frequency == "monthly" %}selected{% endif %}>Monthly</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <!-- Habit List -->
+    {% if habits %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <ul class="list-group mt-3">
+                {% for habit in habits %}
+                    <li class="list-group-item">
+                        <strong>{{ habit.title }}</strong> - {{ habit.frequency }}
+                        
+                        <!-- Date Selection -->
+                        <input type="date" name="date_completed" required class="form-control mt-2">
+                        
+                        <!-- Hidden field to send habit ID -->
+                        <input type="hidden" name="habit_id" value="{{ habit.id }}">
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success mt-2">Mark as Done</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </form>
+    {% else %}
+        <p>No habits found.</p>
+    {% endif %}
 {% endblock %}
