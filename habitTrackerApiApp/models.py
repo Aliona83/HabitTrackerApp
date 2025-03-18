@@ -27,9 +27,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-
-
-
 class Tracker(models.Model):
     FREQUENCY_CHOICES = [
         ('daily', 'Daily'),
@@ -38,12 +35,18 @@ class Tracker(models.Model):
     ]
 
     title = models.CharField(max_length=100)
-    specific_date = models.PositiveIntegerField(blank=True, null=True)
+    specific_date = models.DateField(blank=True, null=True)  # Use DateField for calendars
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     frequency = models.CharField(max_length=100, choices=FREQUENCY_CHOICES)
-    weekdays = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
 
+class HabitLog(models.Model):
+    tracker = models.ForeignKey(Tracker, on_delete=models.CASCADE)
+    date_completed = models.DateField()  # Stores when the habit was completed
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.tracker.title} on {self.date_completed}"
